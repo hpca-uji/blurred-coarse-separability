@@ -1,0 +1,5 @@
+CORRUPTED: ./airplane/33922_00010.png
+CORRUPTED: ./airplane/33814_00013.png
+CORRUPTED: ./car/39560_00004.png
+CORRUPTED: ./chair/27960_00013.png
+CORRUPTED: ./knife/22675_00018.png

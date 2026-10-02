@@ -1,0 +1,85 @@
+Training with a single process on 1 device (cuda).
+Model deit_tiny_patch16_224 created, param count:5717416
+Created AdamW (adamw) optimizer: lr: 0.001, betas: (0.9, 0.999), eps: 1e-08, weight_decay: 0.05, amsgrad: False, maximize: False, foreach: None, capturable: False, differentiable: False, fused: None, decoupled_weight_decay: True
+Using native Torch AMP. Training in mixed precision.
+Train: [ 100/292970 (  0%)]  Loss: 6.92 (6.93)  Time: 0.147s, 3491.14/s  LR: 2.078e-05  Stall: 32.986%, 2.044%
+Train: [ 200/292970 (  0%)]  Loss: 6.90 (6.93)  Time: 0.142s, 3612.84/s  LR: 4.076e-05  Stall: 32.746%, 1.486%
+Train: [ 300/292970 (  0%)]  Loss: 6.88 (6.91)  Time: 0.140s, 3652.38/s  LR: 6.074e-05  Stall: 32.720%, 1.233%
+W0923 14:55:35.800000 2478210 torch/distributed/elastic/agent/server/api.py:739] Received 2 death signal, shutting down workers
+W0923 14:55:35.801000 2478210 torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2478225 closing signal SIGINT
+Traceback (most recent call last):
+  File "/path/topretrain/pretrain.py", line 1247, in <module>
+    main()
+  File "/path/topretrain/pretrain.py", line 1053, in main
+    _logger.info(f"Training ended; Final loss: {final_loss}  ")
+                                                ^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'final_loss' where it is not associated with a value
+W0923 14:55:35.984000 2478210 torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2478225 closing signal SIGTERM
+Traceback (most recent call last):
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 731, in run
+    result = self._invoke_run(role)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 908, in _invoke_run
+    time.sleep(monitor_interval)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 2478210 got signal: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 740, in run
+    self._shutdown(e.sigval)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/local_elastic_agent.py", line 413, in _shutdown
+    self._pcontext.close(death_sig)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 659, in close
+    self._close(death_sig=death_sig, timeout=timeout)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 1022, in _close
+    handler.proc.wait(time_to_wait)
+  File "/python3.11.9/lib/python3.11/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/python3.11.9/lib/python3.11/subprocess.py", line 2047, in _wait
+    time.sleep(delay)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 2478210 got signal: 2
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "env/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "env/lib/python3.11/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "env/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 308, in launch_agent
+    result = agent.run()
+             ^^^^^^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/metrics/api.py", line 134, in wrapper
+    result = f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 745, in run
+    self._shutdown()
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/local_elastic_agent.py", line 413, in _shutdown
+    self._pcontext.close(death_sig)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 659, in close
+    self._close(death_sig=death_sig, timeout=timeout)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 1022, in _close
+    handler.proc.wait(time_to_wait)
+  File "/python3.11.9/lib/python3.11/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/python3.11.9/lib/python3.11/subprocess.py", line 2047, in _wait
+    time.sleep(delay)
+  File "env/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 2478210 got signal: 2
